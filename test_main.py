@@ -31,7 +31,7 @@ def test_step7():
     assert(df_short_title.iloc[0]['short_title'] == 'Pr')
 
 def test_step8():
-    assert(sum_total_price[0] == 9604251)
+    assert(sum_total_price['total_amount'] == 9604251)
 
 def test_step9():
     for x in ['day', 'month', 'year']:
