@@ -1,110 +1,40 @@
 import sqlite3
 import pandas as pd
+from main import *
 
-# ==========================================
-# PART 1: Connecting to the Data
-# ==========================================
+def test_connection():
+    assert(type(conn) == sqlite3.Connection)
 
-# STEP 1A & 1B: Connect to the database
-conn = sqlite3.connect("data.sqlite")
+def test_step2():
+    assert(df_first_five.shape == (23, 2))
+    assert(list(df_first_five.columns) == ['employeeNumber', 'lastName'])
 
-# Reference code to view employee data
-employee_data = pd.read_sql("""SELECT * FROM employees""", conn)
-print("---------------------Employee Data---------------------")
-print(employee_data)
-print("-------------------End Employee Data-------------------")
+def test_step_3():
+    assert(df_five_reverse.shape == (23, 2))
+    assert(list(df_five_reverse.columns) == ['lastName', 'employeeNumber'])
 
+def test_step4():
+    assert('ID' in df_alias.columns)
 
-# ==========================================
-# PART 2: Basic Select Filtering
-# ==========================================
+def test_step5():
+    assert('role' in df_executive.columns)
+    for x in ['Executive', 'Not Executive']:
+        for x in list(df_executive['role']):
+            assert(x)
 
-# STEP 2: Employee number and last name
-df_first_five = pd.read_sql("""
-SELECT employeeNumber, lastName 
-FROM employees
-""", conn)
+def test_step6():
+    assert('name_length' in df_name_length.columns)
+    assert(df_name_length.iloc[0]['name_length'] == 6)
+        
+def test_step7():
+    assert('short_title' in df_short_title.columns)
+    assert(df_short_title.iloc[0]['short_title'] == 'Pr')
 
+def test_step8():
+    assert(sum_total_price[0] == 9604251)
 
-# STEP 3: Last name come before employee number
-df_five_reverse = pd.read_sql("""
-SELECT lastName, employeeNumber 
-FROM employees
-""", conn)
-
-
-# ==========================================
-# PART 3: Aliasing in Select
-# ==========================================
-
-# STEP 4: Last name, and employee number aliased as 'ID'
-df_alias = pd.read_sql("""
-SELECT lastName, employeeNumber AS ID 
-FROM employees
-""", conn)
-
-
-# ==========================================
-# PART 4: CASE Function
-# ==========================================
-
-# STEP 5: Bin jobTitles into 'Executive' or 'Not Executive'
-df_executive = pd.read_sql("""
-SELECT *,
-    CASE 
-        WHEN jobTitle = 'President' OR jobTitle = 'VP Sales' OR jobTitle = 'VP Marketing' THEN 'Executive'
-        ELSE 'Not Executive'
-    END AS role
-FROM employees
-""", conn)
-
-
-# ==========================================
-# PART 5: Built-In Functions - Strings
-# ==========================================
-
-# STEP 6: Length of the last name for all employees as 'name_length'
-df_name_length = pd.read_sql("""
-SELECT LENGTH(lastName) AS name_length 
-FROM employees
-""", conn)
-
-
-# STEP 7: First two letters of each person's job title as 'short_title'
-df_short_title = pd.read_sql("""
-SELECT SUBSTR(jobTitle, 1, 2) AS short_title 
-FROM employees
-""", conn)
-
-
-# ==========================================
-# PART 6: Built-In Functions - Numerics & Dates
-# ==========================================
-
-# Reference code to view order details data
-order_details = pd.read_sql("""SELECT * FROM orderDetails;""", conn)
-print("------------------Order Details Data------------------")
-print(order_details)
-print("----------------End Order Details Data----------------")
-
-# STEP 8: Total amount for all orders (sum of rounded total prices)
-sum_total_price = pd.read_sql("""
-SELECT SUM(ROUND(priceEach * quantityOrdered, 2)) AS total_amount 
-FROM orderDetails
-""", conn).sum()
-
-
-# STEP 9: Return original order date, followed by 'day', 'month', and 'year' columns
-df_day_month_year = pd.read_sql("""
-SELECT orderDate,
-       STRFTIME('%d', orderDate) AS day,
-       STRFTIME('%m', orderDate) AS month,
-       STRFTIME('%Y', orderDate) AS year
-FROM orderDetails
-""", conn)
-
-
-# ==========================================
-# Close Connection
-# ==========================================
-conn.close()
+def test_step9():
+    for x in ['day', 'month', 'year']:
+        for x in df_day_month_year.columns:
+            assert(x)
+    assert(df_day_month_year.iloc[0]['day'] == '06')

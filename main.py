@@ -97,13 +97,12 @@ FROM orderDetails
 
 
 # STEP 9: Return original order date, followed by 'day', 'month', and 'year' columns
-# Assuming the date column is named orderDate and uses standard YYYY-MM-DD format
 df_day_month_year = pd.read_sql("""
 SELECT orderDate,
        STRFTIME('%d', orderDate) AS day,
        STRFTIME('%m', orderDate) AS month,
        STRFTIME('%Y', orderDate) AS year
-FROM orderDetails
+FROM orders
 """, conn)
 
 
