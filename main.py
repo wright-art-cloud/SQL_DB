@@ -88,10 +88,9 @@ print("------------------Order Details Data------------------")
 print(order_details)
 print("----------------End Order Details Data----------------")
 
-# STEP 8: Total amount for all orders (sum of rounded total prices: priceEach * quantityOrdered)
-# Depending on schema column names, typically quantityOrdered and priceEach
+# STEP 8: Total amount for all orders (sum of rounded total prices)
 sum_total_price = pd.read_sql("""
-SELECT ROUND(priceEach * quantityOrdered, 2) AS total_price 
+SELECT SUM(ROUND(priceEach * quantityOrdered, 2)) AS total_amount 
 FROM orderDetails
 """, conn).sum()
 
