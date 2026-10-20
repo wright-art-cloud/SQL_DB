@@ -3,7 +3,6 @@ import pandas as pd
 
 conn = sqlite3.connect("data.sqlite")
 
-# Reference code to view employee data
 employee_data = pd.read_sql("""SELECT * FROM employees""", conn)
 print("---------------------Employee Data---------------------")
 print(employee_data)
