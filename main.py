@@ -1,11 +1,6 @@
 import sqlite3
 import pandas as pd
 
-# ==========================================
-# PART 1: Connecting to the Data
-# ==========================================
-
-# STEP 1A & 1B: Connect to the database
 conn = sqlite3.connect("data.sqlite")
 
 # Reference code to view employee data
